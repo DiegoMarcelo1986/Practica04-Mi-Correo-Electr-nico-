@@ -19,7 +19,7 @@
     while($row = $result->fetch_assoc()) {
  ?>
  
-    <form id="formulario01" method="POST" action="../../controladores/usuario/modificar.php">
+    <form id="formulario01" method="POST" action="http://localhost/SistemaGestion/admin/controladores/usuario/modificar.php">
     
     <input type="hidden" id="codigo" name="codigo" value="<?php echo $codigo ?>" />
     
@@ -50,6 +50,13 @@
     <label for="correo">Correo electrónico (*)</label>
     <input type="email" id="correo" name="correo" value="<?php echo $row["usu_correo"]; ?>"required placeholder="Ingrese el correo electrónico ..."/>
     <br>
+
+    <label for="rol">Seleccione el rol del usuario</label>
+       <select name="opcUsuarios">
+        <option for="user" value="admin">ADMIN</option>
+        <option for="user" value="user">USER</option>
+      </select>
+      <br>
 
  <input type="submit" id="modificar" name="modificar" value="Modificar"/>
  <input type="reset" id="cancelar" name="cancelar" value="Cancelar"/>

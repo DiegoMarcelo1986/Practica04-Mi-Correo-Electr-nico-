@@ -3,11 +3,51 @@
 <html> 
     <head> 
         <meta charset="UTF-8"> 
+
+        <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+          <script>
+          $(document).ready(function() {
+              $(".upload").on('click', function() {
+                  var formData = new FormData();
+                  var files = $('#image')[0].files[0];
+                  formData.append('file',files);
+                  $.ajax({
+                      url: 'upload.php',
+                      type: 'post',
+                      data: formData,
+                      contentType: false,
+                      processData: false,
+                      success: function(response) {
+                          if (response != 0) {
+                              $(".card-img-top").attr("src", response);
+                          } else {
+                              alert('Formato de imagen incorrecto.');
+                          }
+                      }
+                  });
+                  return false;
+              });
+          });
+        </script>
     </head> 
     
     <body>
 
-      <form id="formulario01" method="POST" action="../controladores/crear_usuario.php"> 
+      <form id="formulario01" method="POST" action="http://localhost/SistemaGestion/public/controladores/crear_usuario.php" enctype="multipart/form-data"> 
+        
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="../../images/default-avatar.png">
+            <div class="card-body">
+                <h5 class="card-title">Sube una foto</h5>
+                <p class="card-text">Sube una imagen...</p>
+                <div class="form-group">
+                    <label for="image">Nueva imagen</label>
+                    <input type="file" class="form-control-file" name="image" id="image">
+                </div>
+                <input type="button" class="btn btn-primary upload" value="Subir">
+            </div>
+        </div>
+        <br>
         
         <label for="cedula">Cedula (*)</label> 
         <input type="text" id="cedula" name="cedula" value="" placeholder="Ingrese el número de cedula ..." required/> 
@@ -15,7 +55,6 @@
 
         <label for="nombres">Nombres (*)</label> 
         <input type="text" id="nombres" name="nombres" value="" placeholder="Ingrese sus dos nombres ..." required/> 
-        <br> 
         
         <label for="apellidos">Apelidos (*)</label> 
         <input type="text" id="apellidos" name="apellidos" value="" placeholder="Ingrese sus dos apellidos ..." required/>
@@ -23,7 +62,6 @@
         
         <label for="direccion">Dirección (*)</label> 
         <input type="text" id="direccion" name="direccion" value="" placeholder="Ingrese su dirección ..." required/> 
-        <br> 
         
         <label for="telefono">Teléfono (*)</label> 
         <input type="text" id="telefono" name="telefono" value="" placeholder="Ingrese su número telefónico ..." required/> 
@@ -42,14 +80,12 @@
         <br> 
 
         <label for="rol">Seleccione el rol del usuario</label>
-       <select>
-        <option value="admin">ADMIN</option>
-        <option value="user">USER</option>
-      </select>
-      <br>
+       <select name="opcUsuarios">
+        <option for="user" value="admin">ADMIN</option>
+        <option for="user" value="user">USER</option>
+       </select>
+       <br>
 
-      <label for="avatar">Subir Imagen</label>
-              
       <input type="submit" id="crear" name="crear" value="Aceptar" /> 
       <input type="reset" id="cancelar" name="cancelar" value="Cancelar" /> 
     

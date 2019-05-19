@@ -18,6 +18,7 @@
     //incluir conexión a la base de datos 
     
     include '../../config/conexionBD.php'; 
+    //include 'localhost/SistemaGestion/config/conexionBD.php';
     
     $cedula = isset($_POST["cedula"]) ? trim($_POST["cedula"]) : null; 
     $nombres = isset($_POST["nombres"]) ? mb_strtoupper(trim($_POST["nombres"]), 'UTF-8') : null; 
@@ -27,20 +28,34 @@
     $correo = isset($_POST["correo"]) ? trim($_POST["correo"]): null; 
     $fechaNacimiento = isset($_POST["fechaNacimiento"]) ? trim($_POST["fechaNacimiento"]): null; 
     $contrasena = isset($_POST["contrasena"]) ? trim($_POST["contrasena"]) : null; 
-    $rol = isset($_POST["rol"]) ? trim($_POST["rol"]) : null;
-    $avatar = isset($_POST["avatar"]) ? trim($_POST["avatar"]) : null;
+    $rol = isset($_POST["opcUsuarios"]) ? mb_strtoupper(trim($_POST["opcUsuarios"]), 'UTF-8') : null;
+    //$avatar = isset($_POST["avatar"]) ? trim($_POST["avatar"]) : null;
+    echo "llego: ".$rol;
+    echo "llego: ".$correo;
+    if(strcmp($rol,"ADMIN")==0){
+        $rol=1;
+    } else if(strcmp($rol,"USER")==0){
+        $rol=2;
+    }
 
-    if($rol == "ADMIN"){
-    
-        $rol = "1";
-    
-    }else{
-
-    $rol = "2";
+    if (($_FILES["file"]["type"] == "image/pjpeg")
+    || ($_FILES["file"]["type"] == "image/jpeg")
+    || ($_FILES["file"]["type"] == "image/png")
+    || ($_FILES["file"]["type"] == "image/gif")) {
+    if (move_uploaded_file($_FILES["file"]["tmp_name"], "images/".$_FILES['file']['name'])) {
+        //more code here...
+        echo "images/".$_FILES['file']['name'];
+        $image = $_FILES['file']['name'];
+        $avatar = addslashes(file_get_contents($image));
+    } else {
+        echo 0;
+    }
+} else {
+    echo 0;
 }
 
     $sql = "INSERT INTO usuario VALUES (0, '$cedula', '$nombres', '$apellidos', '$direccion', '$telefono', '$correo', 
-        MD5('$contrasena'), '$fechaNacimiento', 'N', null, null, '$rol', '$avatar')"; 
+        MD5('$contrasena'), '$fechaNacimiento', 'N', null, null, '$rol', '$avatar');"; 
         
         
     if ($conn->query($sql) === TRUE) { 
